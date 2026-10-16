@@ -1,0 +1,142 @@
+{
+  "tables": {
+    "accounts": 85,
+    "products": 7,
+    "sales_teams": 35,
+    "sales_pipeline": 8800
+  },
+  "original_sql_checks_run": 16,
+  "summary": [
+    {
+      "total_opportunities": 8800,
+      "won_opportunities": 4238,
+      "lost_opportunities": 2473,
+      "open_opportunities": 2089,
+      "won_revenue": 10005534.0,
+      "closed_win_rate_percent": 63.15005215318134,
+      "avg_days_to_close": 47.98539710922366,
+      "avg_won_deal_size": 2360.9093912222747
+    }
+  ],
+  "revenue_by_region": [
+    {
+      "regional_office": "West",
+      "revenue": 3568647.0
+    },
+    {
+      "regional_office": "Central",
+      "revenue": 3346293.0
+    },
+    {
+      "regional_office": "East",
+      "revenue": 3090594.0
+    }
+  ],
+  "revenue_by_product": [
+    {
+      "product": "GTX Pro",
+      "revenue": 3510578.0
+    },
+    {
+      "product": "GTX Plus Pro",
+      "revenue": 2629651.0
+    },
+    {
+      "product": "MG Advanced",
+      "revenue": 2216387.0
+    },
+    {
+      "product": "GTX Plus Basic",
+      "revenue": 705275.0
+    },
+    {
+      "product": "GTX Basic",
+      "revenue": 499263.0
+    },
+    {
+      "product": "GTK 500",
+      "revenue": 400612.0
+    },
+    {
+      "product": "MG Special",
+      "revenue": 43768.0
+    }
+  ],
+  "revenue_by_quarter": [
+    {
+      "quarter": "2017 Q1",
+      "revenue": 1134672.0
+    },
+    {
+      "quarter": "2017 Q2",
+      "revenue": 3086111.0
+    },
+    {
+      "quarter": "2017 Q3",
+      "revenue": 2982255.0
+    },
+    {
+      "quarter": "2017 Q4",
+      "revenue": 2802496.0
+    }
+  ],
+  "open_pipeline_by_stage": [
+    {
+      "deal_stage": "Engaging",
+      "opportunities": 1589,
+      "list_price_value": 3892229.0
+    },
+    {
+      "deal_stage": "Prospecting",
+      "opportunities": 500,
+      "list_price_value": 1073986.0
+    }
+  ],
+  "weighted_pipeline": [
+    {
+      "stage_weighted_value": 2160911.7
+    }
+  ],
+  "data_quality": [
+    {
+      "check_name": "duplicate_opportunity_ids",
+      "issue_count": 0
+    },
+    {
+      "check_name": "unmatched_products_after_cleanup",
+      "issue_count": 0
+    },
+    {
+      "check_name": "unmatched_sales_agents",
+      "issue_count": 0
+    },
+    {
+      "check_name": "unmatched_nonblank_accounts",
+      "issue_count": 0
+    },
+    {
+      "check_name": "missing_accounts",
+      "issue_count": 1425
+    },
+    {
+      "check_name": "close_before_engage_date",
+      "issue_count": 0
+    },
+    {
+      "check_name": "closed_without_dates_or_values",
+      "issue_count": 0
+    },
+    {
+      "check_name": "duplicate_account_keys",
+      "issue_count": 0
+    },
+    {
+      "check_name": "duplicate_product_keys",
+      "issue_count": 0
+    },
+    {
+      "check_name": "duplicate_sales_agent_keys",
+      "issue_count": 0
+    }
+  ]
+}

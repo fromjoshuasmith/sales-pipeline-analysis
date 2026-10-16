@@ -1,0 +1,174 @@
+// Actual DAX extracted read-only from the original Power BI model.
+// This file documents definitions; it is not a standalone DAX query.
+
+// Measure in 'DAX Measures'
+Total Opportunities = COUNTROWS('Sales Pipeline')
+
+// Measure in 'DAX Measures'
+Closed Won Revenue = CALCULATE(
+    SUM('Sales Pipeline'[close_value]),
+    'Sales Pipeline'[deal_stage] = "Won"
+)
+
+// Measure in 'DAX Measures'
+Won Opportunities = CALCULATE(
+    [Total Opportunities],
+    'Sales Pipeline'[deal_stage] = "Won"
+)
+
+// Measure in 'DAX Measures'
+Lost Opportunities = CALCULATE(
+    [Total Opportunities],
+    'Sales Pipeline'[deal_stage] = "Lost"
+)
+
+// Measure in 'DAX Measures'
+Closed Lost Revenue = CALCULATE(
+    SUM('Sales Pipeline'[close_value]),
+    'Sales Pipeline'[deal_stage] = "Lost"
+)
+
+// Measure in 'DAX Measures'
+Win Rate = DIVIDE(
+    [Won Opportunities],
+    [Won Opportunities] + [Lost Opportunities]
+)
+
+// Measure in 'DAX Measures'
+Average Deal Size = DIVIDE(
+    [Closed Won Revenue],
+    [Won Opportunities]
+)
+
+// Measure in 'DAX Measures'
+Open Opportunities = CALCULATE(
+    [Total Opportunities],
+    KEEPFILTERS(
+        NOT 'Sales Pipeline'[deal_stage] IN { "Won", "Lost" }
+    )
+)
+
+// Measure in 'DAX Measures'
+Closed Opportunities = [Won Opportunities] + [Lost Opportunities]
+
+// Measure in 'DAX Measures'
+Loss Rate = DIVIDE(
+    [Lost Opportunities],
+    [Closed Opportunities]
+)
+
+// Measure in 'DAX Measures'
+Open Pipeline Value = CALCULATE(
+    SUMX(
+        'Sales Pipeline',
+        RELATED(Products[sales_price])
+    ),
+    NOT 'Sales Pipeline'[deal_stage] IN { "Won", "Lost" }
+)
+
+// Measure in 'DAX Measures'
+Estimated Weighted Pipeline = SUMX(
+    FILTER(
+        'Sales Pipeline',
+        NOT 'Sales Pipeline'[deal_stage] IN { "Won", "Lost" }
+    ),
+    RELATED(Products[sales_price]) *
+    SWITCH(
+        'Sales Pipeline'[deal_stage],
+        "Prospecting", 0.20,
+        "Engaging", 0.50,
+        0
+    )
+)
+
+// Measure in 'DAX Measures'
+Average Days to Close = AVERAGEX(
+    FILTER(
+        'Sales Pipeline',
+        'Sales Pipeline'[deal_stage] IN { "Won", "Lost" }
+            && NOT ISBLANK('Sales Pipeline'[engage_date])
+            && NOT ISBLANK('Sales Pipeline'[close_date])
+    ),
+    DATEDIFF(
+        'Sales Pipeline'[engage_date],
+        'Sales Pipeline'[close_date],
+        DAY
+    )
+)
+
+// Measure in 'DAX Measures'
+Closed Won Revenue Card = FORMAT(
+    [Closed Won Revenue] / 1000000,
+    "$0.0M"
+)
+
+// Measure in 'DAX Measures'
+Open Pipeline Value Card = FORMAT(
+    [Open Pipeline Value] / 1000000,
+    "$0.0M"
+)
+
+// Measure in 'DAX Measures'
+Estimated Weighted Pipeline Card = FORMAT(
+    [Estimated Weighted Pipeline] / 1000000,
+    "$0.0M"
+)
+
+// Measure in 'DAX Measures'
+Total Opportunities Card = FORMAT(
+    [Total Opportunities],
+    "#,0"
+)
+
+// Measure in 'DAX Measures'
+Won Opportunities Card = FORMAT(
+    [Won Opportunities],
+    "#,0"
+)
+
+// Measure in 'DAX Measures'
+Open Opportunities Card = FORMAT(
+    [Open Opportunities],
+    "#,0"
+)
+
+// Measure in 'DAX Measures'
+Win Rate Card = FORMAT(
+    [Win Rate],
+    "0.0%"
+)
+
+// Measure in 'DAX Measures'
+Average Days to Close Card = FORMAT(
+    [Average Days to Close],
+    "0"
+)
+
+// Calculated column in 'Sales Pipeline'
+Close Year Quarter = IF(
+    ISBLANK('Sales Pipeline'[close_date]),
+    BLANK(),
+    YEAR('Sales Pipeline'[close_date]) & " Q" & QUARTER('Sales Pipeline'[close_date])
+)
+
+// Calculated column in 'Sales Pipeline'
+Close Year Quarter Sort = IF(
+    ISBLANK('Sales Pipeline'[close_date]),
+    BLANK(),
+    YEAR('Sales Pipeline'[close_date]) * 10 + QUARTER('Sales Pipeline'[close_date])
+)
+
+// Calculated table
+Date Table = ADDCOLUMNS(
+    CALENDAR(
+        MIN('Sales Pipeline'[engage_date]),
+        MAX('Sales Pipeline'[close_date])
+    ),
+    "Year", YEAR([Date]),
+    "Month Number", MONTH([Date]),
+    "Month Name", FORMAT([Date], "MMM"),
+    "Quarter", "Q" & FORMAT([Date], "Q"),
+    "Year Quarter", YEAR([Date]) & " Q" & FORMAT([Date], "Q"),
+    "Year Month", FORMAT([Date], "YYYY MMM")
+)
+
